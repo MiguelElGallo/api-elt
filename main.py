@@ -4,6 +4,7 @@ import logging
 from dotenv import load_dotenv
 import os
 from dlt.sources.helpers.rest_client.paginators import PageNumberPaginator
+from time import sleep
 
 
 # Set up logging
@@ -28,7 +29,7 @@ def connect_to_api(API_URL, API_KEYAUTH, API_SECRET):
         auth=auth,
         paginator=PageNumberPaginator(
             initial_page=1, page_param="page", maximum_page=3, total_path=None
-        ),
+        ),  # We will load just 3 pages maximum_page=3
     )
 
     return client
@@ -39,6 +40,7 @@ def get_data(client: RESTClient):
     print(client.paginator)
     for page in client.paginate("/api/datasets/74/data"):
         logger.info("Page: %s", page.response.text)
+        sleep(5)  # To avvid rate limiting
 
 
 def main():
