@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 import os
 from dlt.sources.helpers.rest_client.paginators import PageNumberPaginator
 from time import sleep
-
+import dlt
+from datetime import datetime, timedelta, timezone
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -41,29 +42,74 @@ def connect_to_api(API_URL, API_KEYAUTH, API_SECRET):
         RESTClient: An instance of the RESTClient class connected to the API.
     """
     auth = APIKeyAuth(name=API_KEYAUTH, api_key=API_SECRET, location="header")
+
     client = RESTClient(
         base_url=API_URL,
         auth=auth,
         paginator=PageNumberPaginator(
-            initial_page=1, page_param="page", maximum_page=3, total_path=None
-        ),  # We will load just 3 pages maximum_page=3
+            initial_page=1,
+            page_param="page",
+            maximum_page=20,
+            total_path=None,
+        ),  # Max set to 40
     )
 
     return client
 
 
-def get_data(client: RESTClient):
+def get_todays_date_twohours_ago():
+    """
+    Get today's date and time two hours ago.
+
+    Returns:
+        str: Today's date and time two hours ago in the format "YYYY-MM-DDTHH:MM:SS".
+    """
+
+    # In variaable now we get the current date and time in UTC
+    now = datetime.now(timezone.utc)
+
+    two_hours_ago = now - timedelta(hours=2)
+    print(two_hours_ago.isoformat())
+    return two_hours_ago.isoformat()
+
+
+@dlt.resource(
+    primary_key=("startTime"),
+    write_disposition="append",
+)
+def get_data(
+    client: RESTClient,
+    last_created_at=dlt.sources.incremental(
+        "startTime", initial_value=get_todays_date_twohours_ago(), last_value_func=max
+    ),  # Add the use of dlt.sources.incremental
+    # This enables incremental loading
+    # The initial value is the current date and time two hours ago
+    # And then it will automatically remember the last value
+):
     """
     Get data from the API using the provided RESTClient instance.
 
     Args:
         client (RESTClient): An instance of the RESTClient class connected to the API.
     """
+    # Add the use of dlt.sources.incremental
+
     logger.info("get_data started")
-    print(client.paginator)
-    for page in client.paginate("/api/datasets/74/data"):
-        logger.info("Page: %s", page.response.text)
-        sleep(5)  # To avvid rate limiting
+
+    logger.info("Watermark is at: %s", last_created_at.start_value)
+
+    for page in client.paginate(
+        "/api/datasets/74/data",
+        params={
+            "pageSize": 1,
+            "startTime": last_created_at.start_value,
+        },  # Add the use of dlt.sources.incremental
+    ):  # Note pageSize is set to 1, this is very inefficient, but it is done to show the pagination
+        sleep(2)  # To avoid rate limiting
+        print(page.response.json())
+        if page.response.json().get("data", []) == []:
+            break
+        yield page.response.json().get("data", [])
 
 
 def main():
@@ -83,8 +129,14 @@ def main():
         config["API_SECRET"],
     )
 
-    logger.info("Downloading data from API (paginated)")
-    get_data(api_client)
+    pipeline = dlt.pipeline(
+        pipeline_name="fingrid_pipeline_dataset_74",
+        destination="duckdb",
+        dataset_name="fingrid_dataset_74",
+    )
+
+    load_info = pipeline.run(get_data(api_client))
+    logger.info("Load info: %s", load_info)
 
 
 if __name__ == "__main__":
