@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "datasetId": 74,
+      "startTime": "2024-05-25T15:00:00.000Z",
+      "endTime": "2024-05-25T15:15:00.000Z",
+      "value": 7377.55
+    }
+  ],
+  "pagination": { "perPage": 1, "currentPage": 2, "from": 1, "to": 2 }
+}
