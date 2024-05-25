@@ -66,6 +66,75 @@ This sample uses data from Fingrid, subscribe and get your key from [Fingrid](ht
     python3 main.py
     ```
 
+### Incremental load
+
+Now it has support for incremental load, as you can see in this code:
+
+```python
+def get_data(
+    client: RESTClient,
+    last_created_at=dlt.sources.incremental(
+        "startTime", initial_value=get_todays_date_twohours_ago(), last_value_func=max
+    ),  # Add the use of dlt.sources.incremental
+    # This enables incremental loading
+    # The initial value is the current date and time two hours ago
+    # And then it will automatically remember the last value
+):
+```
+
+The first time it starts to load from the current time minus two hours. Then it will set the watermark to the last record loaded. After that only two delta or incremental will happen, everything handled for your automatically.
+
+### Checking the loads
+
+You can run this command:
+
+```shell
+duckdb fingrid_pipeline_dataset_74.duckdb
+```
+
+You will enter the DuckDB prompt, then execute the different sql statements:
+
+```log
+ select * from fingrid_dataset_74.get_data;
+┌────────────┬──────────────────────────┬──────────────────────────┬─────────┬────────────────────┬────────────────┐
+│ dataset_id │        start_time        │         end_time         │  value  │    _dlt_load_id    │    _dlt_id     │
+│   int64    │ timestamp with time zone │ timestamp with time zone │ double  │      varchar       │    varchar     │
+├────────────┼──────────────────────────┼──────────────────────────┼─────────┼────────────────────┼────────────────┤
+│         74 │ 2024-05-25 18:30:00+03   │ 2024-05-25 18:45:00+03   │ 7344.87 │ 1716653382.9283059 │ ONxkQ/7htjAyLw │
+│         74 │ 2024-05-25 18:15:00+03   │ 2024-05-25 18:30:00+03   │ 7328.06 │ 1716653382.9283059 │ VaMdhU9TnXFanA │
+│         74 │ 2024-05-25 18:00:00+03   │ 2024-05-25 18:15:00+03   │ 7377.55 │ 1716653382.9283059 │ aL2dod+gbSHopw │
+│         74 │ 2024-05-25 17:45:00+03   │ 2024-05-25 18:00:00+03   │  7297.2 │ 1716653382.9283059 │ +1MHPgU2onPYoQ │
+│         74 │ 2024-05-25 17:30:00+03   │ 2024-05-25 17:45:00+03   │ 7258.52 │ 1716653382.9283059 │ Uo2qq66VwJmmRQ │
+│         74 │ 2024-05-25 17:15:00+03   │ 2024-05-25 17:30:00+03   │ 7380.26 │ 1716653382.9283059 │ lXwFJcTr9lnqWQ │
+│         74 │ 2024-05-25 20:30:00+03   │ 2024-05-25 20:45:00+03   │ 7030.78 │ 1716660587.4837272 │ ALh5osQYJ1EuaQ │
+│         74 │ 2024-05-25 20:15:00+03   │ 2024-05-25 20:30:00+03   │ 6979.95 │ 1716660587.4837272 │ Hpx71+1c6E1u4Q │
+│         74 │ 2024-05-25 20:00:00+03   │ 2024-05-25 20:15:00+03   │ 7050.27 │ 1716660587.4837272 │ /DEYqg2PubVO2g │
+│         74 │ 2024-05-25 19:45:00+03   │ 2024-05-25 20:00:00+03   │ 7109.54 │ 1716660587.4837272 │ 0xPAcUmSVdlpFA │
+│         74 │ 2024-05-25 19:30:00+03   │ 2024-05-25 19:45:00+03   │  7145.4 │ 1716660587.4837272 │ x2Icixjf98GnKA │
+│         74 │ 2024-05-25 19:15:00+03   │ 2024-05-25 19:30:00+03   │ 7132.35 │ 1716660587.4837272 │ HyqCdz90sd/PtA │
+│         74 │ 2024-05-25 19:00:00+03   │ 2024-05-25 19:15:00+03   │ 7237.78 │ 1716660587.4837272 │ 0axTFaX8NE0Hcw │
+│         74 │ 2024-05-25 18:45:00+03   │ 2024-05-25 19:00:00+03   │ 7363.15 │ 1716660587.4837272 │ nVGm0Pz1E7Ab1w │
+├────────────┴──────────────────────────┴──────────────────────────┴─────────┴────────────────────┴────────────────┤
+│ 14 rows                                                                                                6 columns │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+You can see in column ```_dlt_load_id``` two values, because I executed the load, then waited some hours and loaded again, where it fetched delta records. The delta records start in line 7 where```_dlt_load_id``` changes to ```1716660587.483727```.
+
+There is also metada available,execute the following command:
+```log
+
+select * from fingrid_dataset_74._dlt_loads;
+┌────────────────────┬─────────────────────────────┬────────┬───────────────────────────────┬──────────────────────────────────────────────┐
+│      load_id       │         schema_name         │ status │          inserted_at          │             schema_version_hash              │
+│      varchar       │           varchar           │ int64  │   timestamp with time zone    │                   varchar                    │
+├────────────────────┼─────────────────────────────┼────────┼───────────────────────────────┼──────────────────────────────────────────────┤
+│ 1716653382.9283059 │ fingrid_pipeline_dataset_74 │      0 │ 2024-05-25 19:10:09.155099+03 │ QdD7VXojMsfePT3mgQTCDKRxUjOqAwIWYyqHPd7BrMI= │
+│ 1716660587.4837272 │ fingrid_pipeline_dataset_74 │      0 │ 2024-05-25 21:10:53.835926+03 │ QdD7VXojMsfePT3mgQTCDKRxUjOqAwIWYyqHPd7BrMI= │
+└────────────────────┴─────────────────────────────┴────────┴───────────────────────────────┴──────────────────────────────────────────────┘
+```
+
+
 ### Expected output
 
 You will set something like this:
