@@ -68,7 +68,14 @@ This sample uses data from Fingrid, subscribe and get your key from [Fingrid](ht
 
 5. Execute as Github Action
 
-To execute this code in a GitHub Actions runner, you can create a workflow file in your repository, see `.github/workflows/etlinrunner.yml`. You can see the executions also from this repository.
+    To execute this code in a GitHub Actions runner, you can create a workflow file in your repository, see `.github/workflows/etlinrunner.yml`. You can see the executions also from this repository.
+
+    Set the following secrets in you Github Repository:
+    ```env
+    API_URL=https://data.fingrid.fi
+    API_KEYAUTH=x-api-key
+    API_SECRET=(yoursecret from the FINGRID website)
+    ```
 
 ***Note:*** As a GitHub action, the execution will create a duckdb file that will be created in the runner, after the runner finishes you will loose the file. You can add Python/DuckdDB code to create that file in Cloud Storage like Azure Data Lake, S3, etc. You will need to deal with authentication.
 
