@@ -1,5 +1,3 @@
 dlt[duckdb]
-sqlalchemy
-snowflake-sqlalchemy
 python-dotenv
 
