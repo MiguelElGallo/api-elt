@@ -66,6 +66,12 @@ This sample uses data from Fingrid, subscribe and get your key from [Fingrid](ht
     python3 main.py
     ```
 
+5. Execute as Github Action
+
+To execute this code in a GitHub Actions runner, you can create a workflow file in your repository, see `.github/workflows/etlinrunner.yml`. You can see the executions also from this repository.
+
+***Note:*** As a GitHub action, the execution will create a duckdb file that will be created in the runner, after the runner finishes you will loose the file. You can add Python/DuckdDB code to create that file in Cloud Storage like Azure Data Lake, S3, etc. You will need to deal with authentication.
+
 ### Incremental load
 
 Now it has support for incremental load, as you can see in this code:

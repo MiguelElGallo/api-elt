@@ -1,0 +1,28 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */8 * * *'
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      env:
+        API_URL: ${{secrets.API_URL}}
+        API_KEYAUTH: ${{secrets.API_KEYAUTH}}
+        API_SECRET: ${{secrets.API_SECRET}}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+  
+ 
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.11'
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+  
+        - name: Run Python Code to that performs ETL from API to DuckDB local file
+          run: |
+            python main.py
