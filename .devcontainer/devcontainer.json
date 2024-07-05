@@ -1,0 +1,19 @@
+{
+    "name": "Python 3.11",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "VARIANT": "3.11"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "ms-python.python"
+            ]
+        }
+    }
+}
