@@ -1,19 +1,31 @@
 {
-    "name": "Python 3.11",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "args": {
-            "VARIANT": "3.11"
-        }
+    "name": "ELT With dlt-hub, DuckDB, Python and Github Actions",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            // This should match the version of Node.js in Github Actions workflows
+            "version": "18",
+            "nodeGypDependencies": false
+        },
+        "ghcr.io/devcontainers/features/azure-cli:1.0.8": {},
+        "ghcr.io/azure/azure-dev/azd:latest": {}
     },
     "customizations": {
         "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
-            },
             "extensions": [
-                "ms-python.python"
+                "ms-azuretools.azure-dev",
+                "ms-azuretools.vscode-bicep",
+                "ms-python.python",
+                "esbenp.prettier-vscode"
             ]
         }
+    },
+    "forwardPorts": [
+        50505
+    ],
+    "postCreateCommand": "",
+    "remoteUser": "vscode",
+    "hostRequirements": {
+        "memory": "8gb"
     }
 }
