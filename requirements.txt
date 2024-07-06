@@ -2,15 +2,15 @@
 #    uv pip compile requirements.in --output-file requirements.txt
 astunparse==1.6.3
     # via dlt
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
     # via dlt
-dlt==0.4.11
+dlt[duckdb]==0.4.11
     # via -r requirements.in
-duckdb==0.9.2
+duckdb==0.10.3
     # via dlt
 fsspec==2024.5.0
     # via dlt
@@ -50,13 +50,11 @@ pytz==2024.1
     # via dlt
 pyyaml==6.0.1
     # via dlt
-requests==2.31.0
+requests==2.32.2
     # via dlt
 requirements-parser==0.9.0
     # via dlt
 semver==3.0.2
-    # via dlt
-setuptools==69.5.1
     # via dlt
 simplejson==3.19.2
     # via dlt
@@ -80,7 +78,7 @@ tzdata==2024.1
     # via
     #   dlt
     #   pendulum
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
 wheel==0.43.0
     # via astunparse
