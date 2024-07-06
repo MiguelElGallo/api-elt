@@ -4,6 +4,8 @@ Fingrid API Client
 
 This repository provides a simple Python script to call the Fingrid REST API using the dlt.sources.helpers.rest_client package. It demonstrates how to set up authentication, handle pagination, and log the responses.
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/MiguelElGallo/api-elt?quickstart=1)
+
 ## What it does
 
 The script will:
