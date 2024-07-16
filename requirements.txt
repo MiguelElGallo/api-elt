@@ -2,7 +2,7 @@
 #    uv pip compile requirements.in --output-file requirements.txt
 astunparse==1.6.3
     # via dlt
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -50,7 +50,7 @@ pytz==2024.1
     # via dlt
 pyyaml==6.0.1
     # via dlt
-requests==2.31.0
+requests==2.32.2
     # via dlt
 requirements-parser==0.9.0
     # via dlt
@@ -78,7 +78,7 @@ tzdata==2024.1
     # via
     #   dlt
     #   pendulum
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
 wheel==0.43.0
     # via astunparse
