@@ -1,3 +1,4 @@
 dlt[duckdb]
 python-dotenv
-
+adlfs
+fsspec

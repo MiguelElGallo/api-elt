@@ -160,5 +160,7 @@ INFO:__main__:Page: {"data":[{"datasetId":74,"startTime":"2024-05-18T09:00:00.00
 
 ## Orchestrating
 
+In this REPO you can see [a Github's Action pipeline](.github/workflows/etlinrunner.yml) than runs the whole process. You have some hours of free runners from Github, find more information [here](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#).
+
 You can run this in Azure Batch, and trigger via Data Factory.
 <https://techcommunity.microsoft.com/t5/azure-paas-blog?configure-a-simple-azure-batch-job-with-azure-data-factory/ba-p/2260759>

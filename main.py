@@ -1,12 +1,15 @@
+import logging
+import os
+from datetime import datetime, timedelta, timezone
+from time import sleep
+
+import dlt
+import duckdb
+from adlfs.spec import AzureBlobFileSystem
 from dlt.sources.helpers.rest_client import RESTClient
 from dlt.sources.helpers.rest_client.auth import APIKeyAuth
-import logging
-from dotenv import load_dotenv
-import os
 from dlt.sources.helpers.rest_client.paginators import PageNumberPaginator
-from time import sleep
-import dlt
-from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +28,24 @@ def load_conf():
         "API_URL": os.getenv("API_URL"),
         "API_KEYAUTH": os.getenv("API_KEYAUTH"),
         "API_SECRET": os.getenv("API_SECRET"),
+    }
+    return variables
+
+
+def get_credential_adls_gen2():
+    """
+    Load configuration variables from .env file.
+
+    Returns:
+        dict: A dictionary containing the loaded configuration variables.
+    """
+    load_dotenv()
+    variables = {
+        "tenant_id": os.getenv("tenant_id"),
+        "client_id": os.getenv("client_id"),
+        "client_secret": os.getenv("client_secret"),
+        "store_name": os.getenv("store_name"),
+        "AZURE_STORAGE_ACCOUNT_KEY": os.getenv("AZURE_STORAGE_ACCOUNT_KEY"),
     }
     return variables
 
@@ -129,15 +150,33 @@ def main():
         config["API_SECRET"],
     )
 
+    # dlt-hub destination
+
+    credentials = get_credential_adls_gen2()
+
+    # duckdb.register_filesystem(filesystem(protocol='az', tenant_id=credentials["tenant_id"], client_id=credentials["client_id"], client_secret=credentials["client_secret"], store_name=credentials["store_name"]))
+    # We want the duckdb to connect to the ADLS Gen2
+
+    a = duckdb.connect()
+    a.register_filesystem(
+        AzureBlobFileSystem(
+            account_name=credentials["store_name"],
+            account_key=credentials["AZURE_STORAGE_ACCOUNT_KEY"],
+        )
+    )
+    print(a.list_filesystems())
+
+    # Connect to the ADLS Gen2
+
     pipeline = dlt.pipeline(
         pipeline_name="fingrid_pipeline_dataset_74",
-        destination="duckdb",
+        destination=dlt.destinations.duckdb(a),
         dataset_name="fingrid_dataset_74",
     )
 
     load_info = pipeline.run(get_data(api_client))
     logger.info("Load info: %s", load_info)
 
-
+    
 if __name__ == "__main__":
     main()
