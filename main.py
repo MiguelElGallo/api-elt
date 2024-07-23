@@ -1,12 +1,13 @@
+import logging
+import os
+from datetime import datetime, timedelta, timezone
+from time import sleep
+
+import dlt
 from dlt.sources.helpers.rest_client import RESTClient
 from dlt.sources.helpers.rest_client.auth import APIKeyAuth
-import logging
-from dotenv import load_dotenv
-import os
 from dlt.sources.helpers.rest_client.paginators import PageNumberPaginator
-from time import sleep
-import dlt
-from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -141,3 +142,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
