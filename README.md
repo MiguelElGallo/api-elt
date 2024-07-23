@@ -2,7 +2,7 @@
 
 # api-elt
 
-Fingrid API Client [![.github/workflows/etlinrunner.yml](https://github.com/MiguelElGallo/api-elt/actions/workflows/etlinrunner.yml/badge.svg)](https://github.com/MiguelElGallo/api-elt/actions/workflows/etlinrunner.yml) [![Run pytest tests](https://github.com/MiguelElGallo/api-elt/actions/workflows/test.yml/badge.svg)](https://github.com/MiguelElGallo/api-elt/actions/workflows/test.yml)
+Fingrid API Client [![.github/workflows/etlinrunner.yml](https://github.com/MiguelElGallo/api-elt/actions/workflows/etlinrunner.yml/badge.svg)](https://github.com/MiguelElGallo/api-elt/actions/workflows/etlinrunner.yml) [![Run pytest tests](https://github.com/MiguelElGallo/api-elt/actions/workflows/test.yml/badge.svg)](https://github.com/MiguelElGallo/api-elt/actions/workflows/test.yml) [![Dependency review](https://github.com/MiguelElGallo/api-elt/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/MiguelElGallo/api-elt/actions/workflows/dependency-review.yml)
 
 This repository provides a simple Python script to call the Fingrid REST API using the dlt.sources.helpers.rest_client package. It demonstrates how to set up authentication, handle pagination, and log the responses.
 
