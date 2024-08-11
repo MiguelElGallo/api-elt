@@ -48,7 +48,7 @@ def connect_to_api(API_URL, API_KEYAUTH, API_SECRET):
         base_url=API_URL,
         auth=auth,
         paginator=PageNumberPaginator(
-            initial_page=1,
+            base_page=1,
             page_param="page",
             maximum_page=20,
             total_path=None,
@@ -100,7 +100,7 @@ def get_data(
     logger.info("Watermark is at: %s", last_created_at.start_value)
 
     for page in client.paginate(
-        "/api/datasets/74/data",
+        "/api/datasets/285/data",
         params={
             "pageSize": 1,
             "startTime": last_created_at.start_value,
