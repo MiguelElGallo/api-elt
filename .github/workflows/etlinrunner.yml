@@ -4,7 +4,7 @@ on:
     - cron: '0 */8 * * *'
 jobs:
     build:
-      runs-on: ubuntu-24.04-arm64
+      runs-on: ubuntu-24.04-arm
       env:
         API_URL: ${{secrets.API_URL}}
         API_KEYAUTH: ${{secrets.API_KEYAUTH}}
