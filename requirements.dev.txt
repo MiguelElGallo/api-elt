@@ -44,6 +44,8 @@ idna==3.10
     # via
     #   -r requirements.txt
     #   requests
+iniconfig==2.0.0
+    # via pytest
 jsonpath-ng==1.7.0
     # via
     #   -r requirements.txt
@@ -64,6 +66,7 @@ packaging==24.2
     # via
     #   -r requirements.txt
     #   dlt
+    #   pytest
     #   requirements-parser
 pathvalidate==3.2.3
     # via
@@ -77,10 +80,13 @@ pluggy==1.5.0
     # via
     #   -r requirements.txt
     #   dlt
+    #   pytest
 ply==3.11
     # via
     #   -r requirements.txt
     #   jsonpath-ng
+pytest==8.3.4
+    # via -r requirements.dev.in
 python-dateutil==2.9.0.post0
     # via
     #   -r requirements.txt
