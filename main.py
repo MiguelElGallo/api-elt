@@ -75,13 +75,14 @@ def get_todays_date_twohours_ago():
 
 
 @dlt.resource(
+    name="fingrid_dataset_285",
     primary_key=("startTime"),
-    write_disposition="append",
+    write_disposition="merge",
 )
-def get_data(
+def fingrid_dataset_285(
     client: RESTClient,
     last_created_at=dlt.sources.incremental(
-        "startTime", initial_value=get_todays_date_twohours_ago(), last_value_func=max
+        "endTime", initial_value=get_todays_date_twohours_ago(), last_value_func=max
     ),  # Add the use of dlt.sources.incremental
     # This enables incremental loading
     # The initial value is the current date and time two hours ago
@@ -131,12 +132,12 @@ def main():
     )
 
     pipeline = dlt.pipeline(
-        pipeline_name="fingrid_pipeline_dataset_74",
+        pipeline_name="fingrid_pipeline_dataset_285",
         destination="duckdb",
-        dataset_name="fingrid_dataset_74",
+        dataset_name="fingrid_dataset_285",
     )
 
-    load_info = pipeline.run(get_data(api_client))
+    load_info = pipeline.run(fingrid_dataset_285(api_client))
     logger.info("Load info: %s", load_info)
 
 
