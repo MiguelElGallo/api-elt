@@ -16,6 +16,8 @@ dlt==1.5.0
     # via -r requirements.txt
 duckdb==1.1.3
     # via -r requirements.txt
+exceptiongroup==1.3.0
+    # via pytest
 fsspec==2024.12.0
     # via
     #   -r requirements.txt
@@ -85,7 +87,9 @@ ply==3.11
     # via
     #   -r requirements.txt
     #   jsonpath-ng
-pytest==8.3.4
+pygments==2.19.2
+    # via pytest
+pytest==8.4.2
     # via -r requirements.dev.in
 python-dateutil==2.9.0.post0
     # via
@@ -114,10 +118,6 @@ semver==3.0.2
     # via
     #   -r requirements.txt
     #   dlt
-setuptools==75.8.0
-    # via
-    #   -r requirements.txt
-    #   dlt
 simplejson==3.19.3
     # via
     #   -r requirements.txt
@@ -138,6 +138,10 @@ time-machine==2.16.0
     # via
     #   -r requirements.txt
     #   pendulum
+tomli==2.2.1
+    # via
+    #   mypy
+    #   pytest
 tomlkit==0.13.2
     # via
     #   -r requirements.txt
@@ -150,6 +154,7 @@ typing-extensions==4.12.2
     # via
     #   -r requirements.txt
     #   dlt
+    #   exceptiongroup
     #   mypy
 tzdata==2024.2
     # via
