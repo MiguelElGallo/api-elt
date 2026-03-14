@@ -1,5 +1,28 @@
+[project]
+name = "api-elt"
+version = "0.1.0"
+description = "ELT pipeline that fetches data from Fingrid API and loads into DuckDB"
+requires-python = ">=3.11"
+dependencies = [
+    "dlt[duckdb]>=1.23.0",
+    "python-dotenv>=1.2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.19.1",
+    "pytest>=9.0.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
 [tool.ruff]
-target-version = "py38"
+target-version = "py311"
 lint.select = ["E", "F", "I", "UP"]
 lint.ignore = ["E501", "E701"] # line too long, multiple statements on one line
 src = [".", "utils"]
@@ -19,6 +42,4 @@ source = [".", "utils"]
 
 [tool.coverage.report]
 show_missing = true
-
-
 
