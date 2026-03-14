@@ -44,28 +44,22 @@ This sample uses data from Fingrid, subscribe and get your key from [Fingrid](ht
     API_SECRET=(yoursecret from the FINGRID website)
     ```
 
-2. Create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments) and activate it.
-    You can name the environment .venv for example:
-
-    ```log
-    python -m venv .venv
-    ```
-
-    This name .venv keeps the directory typically hidden in your shell and thus out of the way while giving it a name that explains why the directory exists.
-    Activate it following the instructions from the [link](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments).
-
-    NOTE: If you decide to call your virtual environment something else than .venv you need to update the value of the variable `azureFunctions.pythonVenv` to `yourname` in the `.vscode/settings.json` file.
-
-3. Run the command below to install the necessary requirements.
+2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if you haven't already:
 
     ```shell
-    python3 -m pip install -r requirements.txt
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+
+3. Install the project dependencies (uv will automatically create a virtual environment):
+
+    ```shell
+    uv sync
     ```
 
 4. Execute
 
     ```shell
-    python3 main.py
+    uv run python main.py
     ```
 
 5. Execute as Github Action
