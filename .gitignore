@@ -1,7 +1,13 @@
-__pycache__/main.cpython-311.pyc
-__pycache__/test_main.cpython-311-pytest-8.3.1.pyc
-tests/__pycache__/test_main_code.cpython-311-pytest-8.3.1.pyc
-tests/__pycache__/test_main.cpython-311-pytest-8.3.1.pyc
-tests/__pycache__/test_main2.cpython-311-pytest-8.3.1.pyc
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables
 .env
-tests/__pycache__/test_main_code.cpython-311-pytest-8.3.4.pyc
+
+# Virtual environments
+.venv/
+
+# uv
+.python-version
